@@ -5,9 +5,10 @@ import org.springframework.data.domain.Pageable;
 
 import com.algaworks.algamoney.api.model.Lancamento;
 import com.algaworks.algamoney.api.repository.filter.LancamentoFilter;
+import com.algaworks.algamoney.api.repository.projection.ResumoLancamento;
 
 public interface LancamentoRepositoryQuery {
 	
 	public Page<Lancamento> filtrar(LancamentoFilter filter, Pageable pageable);
-	
+	public Page<ResumoLancamento> resumir(LancamentoFilter filter, Pageable pageable);
 }
