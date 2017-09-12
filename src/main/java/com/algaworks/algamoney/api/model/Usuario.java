@@ -1,34 +1,32 @@
 package com.algaworks.algamoney.api.model;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "pessoa")
-public class Pessoa {
-	
+@Table(name="usuario")
+public class Usuario {
+		
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
-	@NotNull
-	@Size(min=3, max=50)
 	private String nome;
 	
-	@Embedded
-	private Endereco endereco;
+	private String email;
 	
-	@NotNull
-	private boolean ativo;
+	private String senha;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="usuario_permissao", joinColumns = @JoinColumn(name="codigo_usuario"),
+			inverseJoinColumns = @JoinColumn(name="codigo_permissao"))
+	private List<Permissao> permissoes;
 
 	public Long getCodigo() {
 		return codigo;
@@ -46,28 +44,30 @@ public class Pessoa {
 		this.nome = nome;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public boolean isAtivo() {
-		return ativo;
+	public String getSenha() {
+		return senha;
 	}
 
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
-	
-	@JsonIgnore
-	@Transient
-	public boolean isInativo() {
-		return !this.ativo;
+
+	public List<Permissao> getPermissoes() {
+		return permissoes;
 	}
-	
+
+	public void setPermissoes(List<Permissao> permissoes) {
+		this.permissoes = permissoes;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -84,7 +84,7 @@ public class Pessoa {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pessoa other = (Pessoa) obj;
+		Usuario other = (Usuario) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
@@ -92,5 +92,5 @@ public class Pessoa {
 			return false;
 		return true;
 	}
-	
+		
 }
