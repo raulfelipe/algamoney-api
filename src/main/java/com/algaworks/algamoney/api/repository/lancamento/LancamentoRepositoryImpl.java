@@ -37,7 +37,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 
 		Root<Lancamento> root = criteria.from(Lancamento.class);
 
-		Predicate[] predicate = criarResdtricoes(filter, builder, root);
+		Predicate[] predicate = criarRestricoes(filter, builder, root);
 		criteria.where(predicate);
 
 		TypedQuery<Lancamento> query = manager.createQuery(criteria);
@@ -66,7 +66,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 				, root.get(Lancamento_.categoria).get(Categoria_.nome)
 				, root.get(Lancamento_.pessoa).get(Pessoa_.nome)));
 		
-		Predicate[] predicate = criarResdtricoes(filter, builder, root);
+		Predicate[] predicate = criarRestricoes(filter, builder, root);
 		criteria.where(predicate);
 
 		TypedQuery<ResumoLancamento> query = manager.createQuery(criteria);
@@ -77,7 +77,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		
 	}
 
-	private Predicate[] criarResdtricoes(LancamentoFilter filter, CriteriaBuilder builder, Root<Lancamento> root) {
+	private Predicate[] criarRestricoes(LancamentoFilter filter, CriteriaBuilder builder, Root<Lancamento> root) {
 
 		List<Predicate> predicates = new ArrayList<>();
 
@@ -113,7 +113,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
 		Root<Lancamento> root = criteria.from(Lancamento.class);
-		Predicate[] predicates = criarResdtricoes(filter, builder, root);
+		Predicate[] predicates = criarRestricoes(filter, builder, root);
 		criteria.where(predicates);
 		criteria.select(builder.count(root));
 		return manager.createQuery(criteria).getSingleResult();
